@@ -1,0 +1,2 @@
+# Java-GitHub-Explorer
+The GitHub Java Explorer is an Android mobile application designed to help users in discovering and exploring top Java projects on GitHub. This app can be useful for Java developers and enthusiasts as there are many projects on GitHub, and narrowing them down by language and popularity can be a boring task. The app will simplify this by categorizing and presenting these projects in a way that is easy to navigate. By doing so, it helps the user to find projects of interest, either for learning, collaboration, or inspiration.
