@@ -10,8 +10,8 @@ public class JavaGitHubExplorerApplication {
 	private static final Logger logger = LoggerFactory.getLogger(JavaGitHubExplorerApplication.class);
 
 	public static void main(String[] args) {
-		System.out.println("\n\n>>>\tLet's try logging...\n\n");
-		logger.info("\n<!> first log test <!>\n");
+//		System.out.println("\n\n>>>\tFirst attempt at login/signup interaction...\n\n");
+//		logger.info("\n<!> first log test <!>\n");
 		SpringApplication.run(JavaGitHubExplorerApplication.class, args);
 	}
 
