@@ -26,15 +26,27 @@ public class DatabaseHandler {
 		usersCollection = database.getCollection("Users");
 	}
 	
-	public void insertUsers(String username, String password) {
+	public void createUser(String username, String password) {
 		// create a doc for this user, and add it to the collection
 		Document userDocument = new Document("username", username).append("password", password);
 		usersCollection.insertOne(userDocument);
 	}
 	
+	public boolean userExists(String username) {
+		// check if the user exists in the database
+		Document query = new Document("username", username);
+		return usersCollection.find(query).first() != null;
+	}
+	
 	public Document getUserByUsername(String username) {
 		// return the doc of said user given its username
 		return usersCollection.find(new Document("username", username)).first();
+	}
+	
+	public boolean validatePassword(String username, String password) {
+		// validate the entered password for said user
+		Document query = new Document("username", username).append("password", password);
+		return usersCollection.find(query).first() != null;
 	}
 }
 
