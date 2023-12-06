@@ -31,6 +31,11 @@ public class DatabaseHandler {
 		Document userDocument = new Document("username", username).append("password", password);
 		usersCollection.insertOne(userDocument);
 	}
+	
+	public Document getUserByUsername(String username) {
+		// return the doc of said user given its username
+		return usersCollection.find(new Document("username", username)).first();
+	}
 }
 
 
