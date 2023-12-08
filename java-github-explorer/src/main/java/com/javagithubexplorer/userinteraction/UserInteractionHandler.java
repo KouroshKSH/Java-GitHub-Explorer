@@ -30,7 +30,7 @@ public class UserInteractionHandler {
                 case "login":
                 case "log-in":
                     validChoice = true;
-                    // Implement login process
+                    logIn();
                     break;
                 case "2":
                 case "two":
@@ -46,16 +46,63 @@ public class UserInteractionHandler {
         }
     }
 
+    private void logIn() {
+        System.out.println("\n> Log-in to your account.");
+        String username;
+        boolean userExists;
+        boolean correctPassword;
+
+        do {
+            System.out.print("\n> Please enter your username: ");
+            username = scanner.nextLine();
+
+            userExists = databaseHandler.isUsernameUnique(username);
+            if (userExists) {
+            	// condition being true means that the username was unique, or non-existent in the DB
+            	// so it's good for signing up, not logging in (can't log in with a non-existent username)
+                System.out.printf("\n<!> The username '%s' doesn't exist. Please reenter your username:%n", username);
+            }
+        } while (userExists);
+
+        System.out.println("\n> Username found. Enter your password.");
+        do {
+            System.out.print("\n> Enter your password: ");
+            String password = scanner.nextLine();
+
+            correctPassword = databaseHandler.validateUserPass(username, password);
+            if (correctPassword) {
+            	// passwords match
+                System.out.println("\n>>> Successful login!");
+            } else {
+                System.out.println("\n<!> Wrong password. Please try again.");
+            }
+        } while (!correctPassword);
+        
+        // TODO:
+        // replace the lines below with actual repo info with a collection like `Repositories` from MongoDB
+        System.out.println("\nLog-in is done.");
+        System.out.println("\n=====\n>>> This is the homepage...\n=====\n");
+        System.out.println("\n1. title: \t start: \t URL:");
+        System.out.println("\n2. title: \t start: \t URL:");
+        System.out.println("\n3. title: \t start: \t URL:");
+    }
+
+    
+    
     private void signUp() {
+    	// the sign-up phase of the welcome-screen
         System.out.println("\n> Let's create your account. Firstly, we should set your username.");
         String username;
         do {
+        	// get the username
             System.out.print("\n> Please enter your desired username: ");
             username = scanner.nextLine();
             if (username.isEmpty()) {
+            	// usernames should be at least one character long
             	System.out.println("\n<!> Username can't be an empty string. Please type in a valid username: ");
             }
             if (!databaseHandler.isUsernameUnique(username)) {
+            	// no duplicate usernames are allowed
             	System.out.printf("\n<!> The username '%s' is taken. Please type in another username:%n", username);
             }
         } while (!databaseHandler.isUsernameUnique(username) || username.isEmpty());
@@ -64,16 +111,19 @@ public class UserInteractionHandler {
         String password;
         boolean notMatching = true; // represents the condition of passwords not matching
         do {
+        	// get the password
             System.out.print("\n> Set your password: ");
             password = scanner.nextLine();
             if (password.isEmpty()) {
+            	// passwords should be at least one character long
             	System.out.println("\n<!> Password can't be an empty string. Please type in a valid password: ");
             } else {
+            	// password is not empty
             	System.out.print("Confirm your password: ");
                 String confirmPassword = scanner.nextLine();
 
                 if (password.equals(confirmPassword)) {
-                    // Passwords match, create user and add to database
+                    // passwords match, create user and add to database
                     databaseHandler.createUser(username, password);
                     System.out.println("\n\n>>> Account created successfully!");
                     notMatching = false;
@@ -82,6 +132,9 @@ public class UserInteractionHandler {
                 }
             }
         } while (notMatching || password.isEmpty());
+        
+        // TODO:
+        // replace the lines below with actual repo info with a collection like `Repositories` from MongoDB
         System.out.println("\nSign-up is done.");
         System.out.println("\n=====\n>>> This is the homepage...\n=====\n");
         System.out.println("\n1. title: \t start: \t URL:");

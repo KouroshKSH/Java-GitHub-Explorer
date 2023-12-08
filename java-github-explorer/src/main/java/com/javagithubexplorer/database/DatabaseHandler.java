@@ -58,6 +58,18 @@ public class DatabaseHandler {
                              .limit(1)
                              .first() == null;
     }
+	
+	public boolean validateUserPass(String username, String password) {
+		// return true if the given password for given user actually matches the password stored in the DB
+        Document user = usersCollection.find(Filters.eq("username", username)).first();
+
+        if (user != null) {
+            String storedPassword = user.getString("password");
+            return storedPassword.equals(password);
+        }
+        // if the user is not found, then it's also false (can't log in)
+        return false;
+    }
 }
 
 
