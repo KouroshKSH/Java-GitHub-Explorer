@@ -56,11 +56,11 @@ public class UserInteractionHandler {
             	System.out.println("\n<!> Username can't be an empty string. Please type in a valid username: ");
             }
             if (!databaseHandler.isUsernameUnique(username)) {
-            	System.out.printf("\\n<!> The username '%s' is taken. Please type in another username:%n", username);
+            	System.out.printf("\n<!> The username '%s' is taken. Please type in another username:%n", username);
             }
         } while (!databaseHandler.isUsernameUnique(username) || username.isEmpty());
 
-        System.out.println("You can now set your password:");
+        System.out.printf("\n>> The username '%s' is valid. You can now set your password.", username);
         String password;
         boolean notMatching = true; // represents the condition of passwords not matching
         do {
@@ -68,19 +68,18 @@ public class UserInteractionHandler {
             password = scanner.nextLine();
             if (password.isEmpty()) {
             	System.out.println("\n<!> Password can't be an empty string. Please type in a valid password: ");
-            }
-
-            System.out.print("Confirm your password: ");
-            String confirmPassword = scanner.nextLine();
-
-            if (password.equals(confirmPassword)) {
-                // Passwords match, create user and add to database
-                databaseHandler.createUser(username, password);
-                System.out.println("\n\n>>> Account created successfully!");
-                notMatching = false;
-//                break;
             } else {
-                System.out.println("\n<!> Passwords don't match. Please try again.\n");
+            	System.out.print("Confirm your password: ");
+                String confirmPassword = scanner.nextLine();
+
+                if (password.equals(confirmPassword)) {
+                    // Passwords match, create user and add to database
+                    databaseHandler.createUser(username, password);
+                    System.out.println("\n\n>>> Account created successfully!");
+                    notMatching = false;
+                } else {
+                    System.out.println("\n<!> Passwords don't match. Please try again.\n");
+                }
             }
         } while (notMatching || password.isEmpty());
         System.out.println("\nSign-up is done.");
