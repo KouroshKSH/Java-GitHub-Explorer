@@ -13,6 +13,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 
 public class DatabaseHandler {
 	private final MongoClient mongoClient;
@@ -48,6 +50,14 @@ public class DatabaseHandler {
 		Document query = new Document("username", username).append("password", password);
 		return usersCollection.find(query).first() != null;
 	}
+	
+	public boolean isUsernameUnique(String username) {
+		// return true if the username is unique and is not repeated in the database
+        return usersCollection.find(Filters.eq("username", username))
+                             .projection(Projections.include("_id"))
+                             .limit(1)
+                             .first() == null;
+    }
 }
 
 
