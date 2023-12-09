@@ -70,6 +70,34 @@ public class DatabaseHandler {
         // if the user is not found, then it's also false (can't log in)
         return false;
     }
+	
+	public List<Document> findRepoByTitle(String title) {
+	    // Create a filter to search by name
+	    Bson filter = Filters.eq("title", title);
+	    // Execute the find query
+	    List<Document> results = new ArrayList<>();
+	    collection.find(filter).into(results);
+	    return results;
+	}
+
+	public List<Document> findRepoByUrl(String url) {
+	    // Create a filter to search by URL
+	    Bson filter = Filters.eq("url", url);
+	    // Execute the find query
+	    List<Document> results = new ArrayList<>();
+	    collection.find(filter).into(results);
+	    return results;
+	}
+
+	public List<Document> findRepoByStars(String stars) {
+	    // Create a filter to search by stars
+	    Bson filter = Filters.eq("stars", stars);
+	    // Execute the find query
+	    List<Document> results = new ArrayList<>();
+	    collection.find(filter).into(results);
+	    return results;
+	}
+
 	public void printRandomRepositories() {
         // Aggregation pipeline for randomly selecting 5 documents
         List<Document> randomEntries = collection.aggregate(
@@ -84,10 +112,3 @@ public class DatabaseHandler {
         }
     }
 }
-
-
-
-
-
-
-
