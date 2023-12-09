@@ -71,16 +71,16 @@ public class DatabaseHandler {
         return false;
     }
 	
-	public List<Document> findByName(String name) {
+	public List<Document> findRepoByTitle(String title) {
 	    // Create a filter to search by name
-	    Bson filter = Filters.eq("name", name);
+	    Bson filter = Filters.eq("title", title);
 	    // Execute the find query
 	    List<Document> results = new ArrayList<>();
 	    collection.find(filter).into(results);
 	    return results;
 	}
 
-	public List<Document> findByUrl(String url) {
+	public List<Document> findRepoByUrl(String url) {
 	    // Create a filter to search by URL
 	    Bson filter = Filters.eq("url", url);
 	    // Execute the find query
@@ -89,7 +89,7 @@ public class DatabaseHandler {
 	    return results;
 	}
 
-	public List<Document> findByStars(String stars) {
+	public List<Document> findRepoByStars(String stars) {
 	    // Create a filter to search by stars
 	    Bson filter = Filters.eq("stars", stars);
 	    // Execute the find query
