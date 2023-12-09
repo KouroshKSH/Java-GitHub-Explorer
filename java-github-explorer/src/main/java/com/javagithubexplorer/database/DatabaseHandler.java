@@ -70,6 +70,34 @@ public class DatabaseHandler {
         // if the user is not found, then it's also false (can't log in)
         return false;
     }
+	
+	public List<Document> findByName(String name) {
+	    // Create a filter to search by name
+	    Bson filter = Filters.eq("name", name);
+	    // Execute the find query
+	    List<Document> results = new ArrayList<>();
+	    collection.find(filter).into(results);
+	    return results;
+	}
+
+	public List<Document> findByUrl(String url) {
+	    // Create a filter to search by URL
+	    Bson filter = Filters.eq("url", url);
+	    // Execute the find query
+	    List<Document> results = new ArrayList<>();
+	    collection.find(filter).into(results);
+	    return results;
+	}
+
+	public List<Document> findByStars(String stars) {
+	    // Create a filter to search by stars
+	    Bson filter = Filters.eq("stars", stars);
+	    // Execute the find query
+	    List<Document> results = new ArrayList<>();
+	    collection.find(filter).into(results);
+	    return results;
+	}
+
 }
 
 
