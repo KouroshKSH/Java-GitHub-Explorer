@@ -70,6 +70,19 @@ public class DatabaseHandler {
         // if the user is not found, then it's also false (can't log in)
         return false;
     }
+	public List<Document> findByStarsGreaterThan(int starsThreshold) {
+        // Aggregation pipeline for converting stars to number and filtering
+        List<Bson> pipeline = Arrays.asList(
+            Aggregates.addFields(new Field<>("starsInt", new Document("$toInt", "$stars"))),
+            Aggregates.match(Filters.gt("starsInt", starsThreshold)),
+            Aggregates.project(Projections.excludeId())
+        );
+
+        // Execute the aggregation query
+        List<Document> results = new ArrayList<>();
+        collection.aggregate(pipeline).into(results);
+        return results;
+     }
 }
 
 
