@@ -98,11 +98,17 @@ public class DatabaseHandler {
 	    return results;
 	}
 
+	public void printRandomRepositories() {
+        // Aggregation pipeline for randomly selecting 5 documents
+        List<Document> randomEntries = collection.aggregate(
+            Arrays.asList(
+                Aggregates.sample(5)
+            )
+        ).into(new java.util.ArrayList<>());
+
+        // Print the retrieved documents
+        for (Document entry : randomEntries) {
+            System.out.println(entry.toJson());
+        }
+    }
 }
-
-
-
-
-
-
-
