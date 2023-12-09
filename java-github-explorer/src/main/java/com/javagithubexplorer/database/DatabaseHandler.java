@@ -70,6 +70,19 @@ public class DatabaseHandler {
         // if the user is not found, then it's also false (can't log in)
         return false;
     }
+	public void printRandomEntries() {
+        // Aggregation pipeline for randomly selecting 5 documents
+        List<Document> randomEntries = collection.aggregate(
+            Arrays.asList(
+                Aggregates.sample(5)
+            )
+        ).into(new java.util.ArrayList<>());
+
+        // Print the retrieved documents
+        for (Document entry : randomEntries) {
+            System.out.println(entry.toJson());
+        }
+    }
 }
 
 
