@@ -82,9 +82,8 @@ public class UserInteractionHandler {
         // replace the lines below with actual repo info with a collection like `Repositories` from MongoDB
         System.out.println("\nLog-in is done.");
         System.out.println("\n=====\n>>> This is the homepage...\n=====\n");
-        System.out.println("\n1. title: \t start: \t URL:");
-        System.out.println("\n2. title: \t start: \t URL:");
-        System.out.println("\n3. title: \t start: \t URL:");
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        dbHandler.printRandomEntries();
     }
 
     
@@ -137,8 +136,7 @@ public class UserInteractionHandler {
         // replace the lines below with actual repo info with a collection like `Repositories` from MongoDB
         System.out.println("\nSign-up is done.");
         System.out.println("\n=====\n>>> This is the homepage...\n=====\n");
-        System.out.println("\n1. title: \t start: \t URL:");
-        System.out.println("\n2. title: \t start: \t URL:");
-        System.out.println("\n3. title: \t start: \t URL:");
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        dbHandler.printRandomEntries();
     }
 }
