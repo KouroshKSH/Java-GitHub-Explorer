@@ -85,11 +85,23 @@ public class UserInteractionHandler {
         // replace the lines below with actual repo info with a collection like `Repositories` from MongoDB
         System.out.println("\nLog-in is done.");
         System.out.println("\n=====\n>>> This is the homepage...\n=====\n");
+        
         DatabaseHandler dbHandler = new DatabaseHandler();
+        
         System.out.println("\n> Printing a list of 5 random repositories:\n");
-        dbHandler.printRandomRepositories(5);
+        List<Document> result = dbHandler.getRandomRepositories(5);
+        dbHandler.printRepositories(result);
+        
         System.out.println("\n> Printing the list of repositories that have more than 5000 stars:\n");
-        List<Document> result = dbHandler.filterReposWithStarsGEQ(5000);
+        result = dbHandler.filterReposWithStarsGEQ(5000);
+        dbHandler.printRepositories(result);
+        
+        System.out.println("\n> Let's see if `lazygit` exists in the database. If so, print its information.\n");
+        result = dbHandler.findRepoByTitle("lazygit");
+        dbHandler.printRepositories(result);
+        
+        System.out.println("\n> Let's see if `awesome-neovim` exists in the database. If so, print its information.\n");
+        result = dbHandler.findRepoByTitle("awesome-neovim");
         dbHandler.printRepositories(result);
     }
 
@@ -141,11 +153,23 @@ public class UserInteractionHandler {
         
         System.out.println("\nSign-up is done.");
         System.out.println("\n=====\n>>> This is the homepage...\n=====\n");
+        
         DatabaseHandler dbHandler = new DatabaseHandler();
+        
         System.out.println("\n> Printing a list 4 of random repositories:\n");
-        dbHandler.printRandomRepositories(4);
+        List<Document> result = dbHandler.getRandomRepositories(4);
+        dbHandler.printRepositories(result);
+        
         System.out.println("\n> Printing the list of repositories that have more than 100'000 stars:\n");
-        List<Document> result = dbHandler.filterReposWithStarsGEQ(100000);
+        result = dbHandler.filterReposWithStarsGEQ(100000);
+        dbHandler.printRepositories(result);
+        
+        System.out.println("\n> Let's see if `awesome-neovim` exists in the database. If so, print its information.\n");
+        result = dbHandler.findRepoByTitle("awesome-neovim");
+        dbHandler.printRepositories(result);
+        
+        System.out.println("\n> Let's see if `lazygit` exists in the database. If so, print its information.\n");
+        result = dbHandler.findRepoByTitle("lazygit");
         dbHandler.printRepositories(result);
     }
 }
