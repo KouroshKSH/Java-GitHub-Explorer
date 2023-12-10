@@ -12,7 +12,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 
@@ -20,12 +28,14 @@ public class DatabaseHandler {
 	private final MongoClient mongoClient;
 	private final MongoDatabase database;
 	private final MongoCollection<Document> usersCollection;
+	private final MongoCollection<Document> reposCollection;
 	
 	public DatabaseHandler() {
 		// establish a connection to MongoDB
 		mongoClient = MongoClients.create("mongodb://localhost:27017");
 		database = mongoClient.getDatabase("Java_GitHub_Explorer");
 		usersCollection = database.getCollection("Users");
+		reposCollection = database.getCollection("Repositories");
 	}
 	
 	public void createUser(String username, String password) {
@@ -71,54 +81,75 @@ public class DatabaseHandler {
         return false;
     }
   
-	public List<Document> filterReposWithStarsGEQ()(int starsThreshold) {
-        // Aggregation pipeline for converting stars to number and filtering
-        List<Bson> pipeline = Arrays.asList(
-            Aggregates.addFields(new Field<>("starsInt", new Document("$toInt", "$stars"))),
-            Aggregates.match(Filters.gt("starsInt", starsThreshold)),
-            Aggregates.project(Projections.excludeId())
-        );
+//	public List<Document> filterReposWithStarsGEQ(int starsThreshold) {
+//        // Aggregation pipeline for converting stars to number and filtering
+//        List<Bson> pipeline = Arrays.asList(
+//            Aggregates.addFields(new Field<>("starsInt", new Document("$toInt", "$stars"))),
+//            Aggregates.match(Filters.gt("starsInt", starsThreshold)),
+//            Aggregates.project(Projections.excludeId())
+//        );
+//
+//        // Execute the aggregation query
+//        List<Document> results = new ArrayList<>();
+//        reposCollection.aggregate(pipeline).into(results);
+//        return results;
+//     }
+	
+	public List<Document> filterReposWithStarsGEQ(int starsThreshold) {
+		// this function finds all the repositories that have their number of stars greater than the threshold provided 
+	    // Aggregation pipeline for converting stars to number and filtering
+	    List<Bson> pipeline = Arrays.asList(
+	        new Document("$addFields", new Document("starsInt", new Document("$toInt", "$stars"))),
+	        Aggregates.match(Filters.gt("starsInt", starsThreshold)),
+	        Aggregates.project(Projections.excludeId())
+	    );
 
-        // Execute the aggregation query
-        List<Document> results = new ArrayList<>();
-        collection.aggregate(pipeline).into(results);
-        return results;
-     }
-}
+	    // Execute the aggregation query
+	    List<Document> results = new ArrayList<>();
+	    reposCollection.aggregate(pipeline).into(results);
+	    return results;
+	}
 
 	
 	public List<Document> findRepoByTitle(String title) {
-	    // Create a filter to search by name
-	    Bson filter = Filters.eq("title", title);
-	    // Execute the find query
+		// this function finds the repository that has a specific title
+	    Bson filter = Filters.eq("title", title); // create a filter to search by name
 	    List<Document> results = new ArrayList<>();
-	    collection.find(filter).into(results);
+	    reposCollection.find(filter).into(results);
 	    return results;
 	}
 
 	public List<Document> findRepoByUrl(String url) {
-	    // Create a filter to search by URL
-	    Bson filter = Filters.eq("url", url);
-	    // Execute the find query
+		// this function finds the repository with a given URL
+	    Bson filter = Filters.eq("url", url); // create a filter to search by URL
 	    List<Document> results = new ArrayList<>();
-	    collection.find(filter).into(results);
+	    reposCollection.find(filter).into(results);
 	    return results;
 	}
 
-	public List<Document> findRepoByStars(String stars) {
-	    // Create a filter to search by stars
-	    Bson filter = Filters.eq("stars", stars);
-	    // Execute the find query
+//	public List<Document> findRepoByStars(String stars) {
+//	    // Create a filter to search by stars
+//	    Bson filter = Filters.eq("stars", stars);
+//	    // Execute the find query
+//	    List<Document> results = new ArrayList<>();
+//	    reposCollection.find(filter).into(results);
+//	    return results;
+//	}
+	
+	public List<Document> findRepoByStars(int stars) {
+		// this function finds repositories with a specific number of stars
+	    Bson filter = Filters.eq("stars", stars); // create a filter to search by stars
 	    List<Document> results = new ArrayList<>();
-	    collection.find(filter).into(results);
+	    reposCollection.find(filter).into(results);
 	    return results;
 	}
 
-	public void printRandomRepositories() {
-        // Aggregation pipeline for randomly selecting 5 documents
-        List<Document> randomEntries = collection.aggregate(
+
+	public void printRandomRepositories(int num) {
+        // aggregation pipeline for randomly selecting `num` number of documents
+        List<Document> randomEntries = reposCollection.aggregate(
             Arrays.asList(
-                Aggregates.sample(5)
+                Aggregates.sample(num)
             )
         ).into(new java.util.ArrayList<>());
 
@@ -127,4 +158,26 @@ public class DatabaseHandler {
             System.out.println(entry.toJson());
         }
     }
+	
+	public void printRepositories(List<Document> repositories) {
+		// this function prints all the repositories in a given list
+	    for (int i = 0; i < repositories.size(); i++) {
+	        Document repo = repositories.get(i);
+
+	        // extract details dynamically
+	        String title = repo.getString("title");
+	        int stars = repo.getInteger("stars");
+	        String url = repo.getString("url");
+
+	        System.out.printf("%d. title: %s, number of stars: %d, URL: %s%n", i++, title, stars, url);
+
+	        // Additional logic for future attributes
+//	        for (String key : repo.keySet()) {
+//	            if (!key.equals("title") && !key.equals("stars") && !key.equals("url")) {
+//	                System.out.printf("   %s: %s%n", key, repo.get(key));
+//	            }
+//	        }
+	    }
+	}
+
 }
