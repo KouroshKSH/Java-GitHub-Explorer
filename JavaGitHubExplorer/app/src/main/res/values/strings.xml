@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">JavaGitHubExplorer</string>
+
+
+<!--    <resources>-->
+        <string name="username">Username</string>
+        <string name="password">Password</string>
+        <string name="login">Login</string>
+        <string name="sign_up">Sign Up</string>
+        <string name="email">Email</string>
+        <string name="sign_up_prompt">Dont have an account? Sign up</string>
+        <string name="create_account">Create Account</string>
+        <!-- Add other strings here as needed -->
+<!--    </resources>-->
+
+</resources>
