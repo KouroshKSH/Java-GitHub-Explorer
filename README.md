@@ -6,6 +6,8 @@ The GitHub Java Explorer is an Android mobile application designed to help users
 ## Objective and Scope of the Project
 The objective of our app is to provide a user-friendly platform where users can seamlessly find and explore top Java projects based on the project’s number of stars. After finding the project, they can be redirected to GitHub’s official website by further clicking on the links. This app consists of a front-end coded in Android Framework, a back-end using Java Spring Framework, and a MongoDB database.
 
+![](img/user_journey_diagram.png)
+
 ### Main Targets
 - Display a list of top Java projects from GitHub
 - Offer filter, sort, and search functionalities by getting user-inputs
@@ -25,6 +27,6 @@ The objective of our app is to provide a user-friendly platform where users can 
 1. Log-in or Sign-up screen for entrance (for user profiles)
 2. Fetch a list of top Java projects via GitHub’s API
 3. Landing screen with a list of projects (scrollable)
-4. Filtered list of projects screen (based on tags defined by the user)
-5. Search results screen (queried by the user)
+4. ~Filtered list of projects screen (based on tags defined by the user)~
+5. ~Search results screen (queried by the user)~
 6. Full description of the project screen (can redirect to GitHub)
